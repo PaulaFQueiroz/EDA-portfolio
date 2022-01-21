@@ -5,7 +5,7 @@ Covid EDA - Skills applyed: joins, temp tables, CTE's, agregate functions, creat
 
 
 Select*
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 Where continent is not null
 order by 3,4
 
@@ -14,7 +14,7 @@ order by 3,4
 --Select the Data we are going to be using
 
 select  location, date, total_cases, new_cases, total_deaths, population
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 Where continent is not null
 order by 1,2
 
@@ -24,7 +24,7 @@ order by 1,2
 -- Shows  the likelihood of dying if you contract covid in your country: ex Brazil 2.78 vs usa 1.78)
 
 select  location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 Where location like '%Brazil%'
 and continent is not null
 order by 1,2
@@ -33,7 +33,7 @@ order by 1,2
 --Shows what percentage of population got Covid
 
 select  location, date, population, total_cases,  (total_cases /population)*100 as PercentPopulationInfected
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 --Where location like '%Brazil%'
 Where continent is not null
 order by 1,2
@@ -43,7 +43,7 @@ order by 1,2
 --desc of highest percentage of the population that got infected per country 
 
 select  location, population, MAX(total_cases) as HighestInfectionCount,  MAX((total_cases /population))*100 as PercentPopulationInfected
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 --Where location like '%Brazil%'
 Group by location, Population
 order by PercentPopulationInfected desc
@@ -54,7 +54,7 @@ order by PercentPopulationInfected desc
 --Has to be casted by integer (data type)
 
 Select  location, MAX(cast(total_deaths as int)) as TotalDeathCount
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 --Where location like '%Brazil%'
 Where continent is not null
 Group by location
@@ -67,7 +67,7 @@ order by TotalDeathCount desc
 --Showing continents with the highest death count per population
 
 Select  continent, MAX(cast(total_deaths as int)) as TotalDeathCount
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 --Where location like '%Brazil%'
 Where continent is not null
 Group by continent
@@ -80,7 +80,7 @@ order by TotalDeathCount desc
 
 
 Select SUM(new_cases) as total_cases, SUM(cast(new_deaths as int)) as total_deaths , SUM(cast(new_deaths as int))/SUM(new_cases)*100 as DeathPercentage
-From PortifolioProject..CovidDeaths$
+From PortfolioProject..CovidDeaths$
 --Where location like '%Brazil%'
 Where continent is not null
 --Group by date
@@ -98,8 +98,8 @@ Select dea.continent, dea.location, dea.date, dea.Population, vac.new_vaccinatio
 , SUM(cast(vac.new_vaccinations as int)) OVER (Partition by dea.location Order by dea.location
 ,dea.date) as RolingPeopleVaccinated
 --, (RolingPeopleVaccinated/population)*100
-From PortifolioProject..CovidDeaths$ dea
-Join PortifolioProject..CovidVaccination$ vac
+From PortfolioProject..CovidDeaths$ dea
+Join PortfolioProject..CovidVaccination$ vac
      On dea.location = vac.location
 	 and dea.date = vac.date
 where dea.continent is not null
@@ -116,8 +116,8 @@ Select dea.continent, dea.location, dea.date, dea.Population, vac.new_vaccinatio
 , SUM(cast(vac.new_vaccinations as int)) OVER (Partition by dea.location Order by dea.location
 ,dea.date) as RollingPeopleVaccinated
 --, (RolingPeopleVaccinated/population)*100
-From PortifolioProject..CovidDeaths$ dea
-Join PortifolioProject..CovidVaccination$ vac
+From PortfolioProject..CovidDeaths$ dea
+Join PortfolioProject..CovidVaccination$ vac
      On dea.location = vac.location
 	 and dea.date = vac.date
 where dea.continent is not null
@@ -145,8 +145,8 @@ Select dea.continent, dea.location, dea.date, dea.Population, vac.new_vaccinatio
 , SUM(cast(vac.new_vaccinations as bigint)) OVER (Partition by dea.location Order by dea.location
 ,dea.date) as RollingPeopleVaccinated
 --, (RolingPeopleVaccinated/population)*100
-From PortifolioProject..CovidDeaths$ dea
-Join PortifolioProject..CovidVaccination$ vac
+From PortfolioProject..CovidDeaths$ dea
+Join PortfolioProject..CovidVaccination$ vac
      On dea.location = vac.location
 	 and dea.date = vac.date
 --where dea.continent is not null
@@ -164,8 +164,8 @@ Select dea.continent, dea.location, dea.date, dea.Population, vac.new_vaccinatio
 , SUM(cast(vac.new_vaccinations as bigint)) OVER (Partition by dea.location Order by dea.location
 ,dea.date) as RollingPeopleVaccinated
 --, (RolingPeopleVaccinated/population)*100
-From PortifolioProject..CovidDeaths$ dea
-Join PortifolioProject..CovidVaccination$ vac
+From PortfolioProject..CovidDeaths$ dea
+Join PortfolioProject..CovidVaccination$ vac
      On dea.location = vac.location
 	 and dea.date = vac.date
 where dea.continent is not null
